@@ -8,16 +8,19 @@
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
     "install": "cd server && npm i && cd ../client && npm i",
     "build": "cd client && npm run build",
-    "watch":"nodemon"
+    "watch": "nodemon"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^5.1.0",
+    "concurrently": "^5.3.0",
     "nodemon": "^2.0.16"
   },
   "dependencies": {
-    "jsonwebtoken": "^8.5.1"
+    "@apollo/client": "^3.6.2",
+    "graphql": "^16.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "react-router-dom": "^6.3.0"
   }
 }
