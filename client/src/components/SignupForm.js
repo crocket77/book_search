@@ -34,7 +34,6 @@ const SignupForm = () => {
     }
 
     try {
-      console.log("here")
       const { data } = await addUser({
         variables: {...userFormData }
       });
