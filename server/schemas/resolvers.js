@@ -18,8 +18,16 @@ const resolvers = {
       books: async (parent,{title}) => {
         const params = title ? { title } : {};
         return Book.find(params).sort({ createdAt: -1 });
-        }
+        },
+        users: async () => {
+          return User.find()
+            .select('-__v -password')
+            .populate('savedBooks')
+           
+            // .populate('interests');
+        },
       },
+      
       Mutation:{
         addUser: async(parent,args)=>{
           const user = await User.create(args);
@@ -42,9 +50,31 @@ const resolvers = {
           const token = signToken(user);
           return { token, user };
                   
+        },
+        saveBook: async (parent,{book},context)=>{
+          if(context.user){
+            const userNew=await User.findOneAndUpdate(
+              {_id:context.user._id},
+              {$addToSet: {savedBooks:book}},
+              {new:true}
+              )
+              return userNew;
+            }
+              throw new AuthenticationError('You need to log in');
+        },
+       
+        deleteBook: async(parent,args,context)=>{
+          console.log(context.user._id)
+          if (context.user){
+            const userNew = await User.findOneAndUpdate(
+              {_id: context.user._id},
+              {$pull:{savedBooks:{bookId:args.bookId}}},
+              {new:true}
+            );
+            return updatedUser;
+          }
         }
       }
-      
   };
   
   module.exports = resolvers;
