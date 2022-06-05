@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
@@ -11,6 +11,37 @@ const SavedBooks = () => {
   
   console.log(data)
 
+    // use this to determine if `useEffect()` hook needs to run again
+    // const userDataLength = Object.keys(userData).length;
+    // const userDataLength=data.savedBooks
+  
+    useEffect(() => {
+      const getUserData = async () => {
+        try {
+          const token = Auth.loggedIn() ? Auth.getToken() : null;
+  
+          if (!token) {
+            return false;
+          }
+    //       // const response = await getMe(token);
+  
+    //       // if (!response.ok) {
+    //       //   throw new Error('something went wrong!');
+          // }
+  
+    //       // const user = await response.json();
+    //       // const user = await useQuery(QUERY_ME);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+  
+      // getUserData();
+
+  //not sure what this part of useEffect does:
+  });
+  //from initial files:
+    // }, [userDataLength]);
 
   const userData = data?.me || {};
 
