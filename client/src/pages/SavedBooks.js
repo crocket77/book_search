@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
@@ -8,26 +8,38 @@ import { DELETE_BOOK } from '../utils/mutations';
 
 const SavedBooks = () => {
   const { loading, data } = useQuery(QUERY_ME);
+  const [removeBook] = useMutation(DELETE_BOOK);
+  const [initialData, setData]=useState([]);
+  const userData = data?.me || {};
+
   
+  function refreshPage() {
+    window.location.reload(false);
+  }
+  
+
+  console.log(initialData)
   console.log(data)
+  console.log(userData)
 
     // use this to determine if `useEffect()` hook needs to run again
     // const userDataLength = Object.keys(userData).length;
     // const userDataLength=data.savedBooks
   
     useEffect(() => {
+      console.log("useEffect ran")
       const getUserData = async () => {
+        console.log("getUserData ran")
         try {
           const token = Auth.loggedIn() ? Auth.getToken() : null;
+          
   
           if (!token) {
             return false;
           }
-    //       // const response = await getMe(token);
-  
-    //       // if (!response.ok) {
-    //       //   throw new Error('something went wrong!');
-          // }
+          setData(data)
+          
+         // const response = await getMe(token);
   
     //       // const user = await response.json();
     //       // const user = await useQuery(QUERY_ME);
@@ -36,22 +48,14 @@ const SavedBooks = () => {
         }
       };
   
-      // getUserData();
+      getUserData();
+      console.log(initialData)
+      
 
-  //not sure what this part of useEffect does:
-  });
-  //from initial files:
-    // }, [userDataLength]);
+      //data is the rerun condition
+   }, [data]);
 
-  const userData = data?.me || {};
-
-  const [removeBook] = useMutation(DELETE_BOOK);
-
-  function refreshPage() {
-    window.location.reload(false);
-  }
-  
-  if(loading){
+   if(loading){
     return <h1>loading</h1>
   }
 
